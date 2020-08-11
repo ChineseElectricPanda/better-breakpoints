@@ -1,0 +1,41 @@
+﻿<Canvas x:Class="BetterBreakpoints.Margin.MarginMarker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             Width="17" Height="16" Background="Transparent">
+    <Ellipse
+        Name="Outline"
+        Height="12"
+        Width="12"
+        Canvas.Top="1.5"
+        Canvas.Left="2.5" />
+    <Ellipse
+        Name="Fill"
+        Height="10"
+        Width="10"
+        Canvas.Top="2.5"
+        Canvas.Left="3.5"
+        Fill="White"/>
+    <Rectangle
+        Name="TriggerIcon"
+        Width="12"
+        Height="12"
+        Canvas.Top="6"
+        Canvas.Left="7">
+        <Rectangle.Fill>
+            <DrawingBrush>
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <DrawingGroup.Children>
+                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                            <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M6.3819,-0.000199999999999534L1.9999,8.7638 1.9999,9.9998 5.3709,9.9998 2.9999,14.7648 2.9999,15.9998 5.4149,15.9998 13.9999,7.4138 13.9999,5.9998 9.4139,5.9998 13.9999,1.4138 13.9999,-0.000199999999999534z" />
+                            <GeometryDrawing Brush="#FFC17C1A" Geometry="F1M7,7L13,7 5,15 4,15 6.985,9 3,9 7,1 13,1z" />
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Rectangle.Fill>
+    </Rectangle>
+</Canvas>
