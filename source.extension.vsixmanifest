@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="BetterBreakpoints.6b6a1161-d5cc-40dc-a483-a332b340967f" Version="1.0" Language="en-US" Publisher="Hanzhi Wang" />
+        <Identity Id="BetterBreakpoints.6b6a1161-d5cc-40dc-a483-a332b340967f" Version="1.0.0" Language="en-US" Publisher="ChineseElectricPanda" />
         <DisplayName>Better Breakpoints</DisplayName>
-        <Description xml:space="preserve">Empty VSIX Project.</Description>
+        <Description xml:space="preserve">🅱etter 🅱reakpoints</Description>
         <Icon>Resources\b.png</Icon>
         <PreviewImage>Resources\b.png</PreviewImage>
     </Metadata>
