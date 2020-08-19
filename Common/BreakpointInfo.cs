@@ -4,6 +4,7 @@ using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Media;
 
 namespace BetterBreakpoints.Common
@@ -113,7 +114,12 @@ namespace BetterBreakpoints.Common
         public void RemoveNativeBreakpoint()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            _nativeBreakpoint?.Delete();
+            try
+            {
+                _nativeBreakpoint?.Delete();
+            }
+            catch (COMException) { }
+
             _nativeBreakpoint = null;
         }
 
