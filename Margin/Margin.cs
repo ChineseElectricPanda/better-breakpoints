@@ -25,7 +25,7 @@ namespace BetterBreakpoints.Margin
 
         private bool _isDisposed;
 
-        private Dictionary<int, MarginMarker> _breakpointMarkers = new Dictionary<int, MarginMarker>();
+        private List<MarginMarker> _breakpointMarkers = new List<MarginMarker>();
         private string _filePath;
         private ITextView _textView;
 
@@ -71,10 +71,24 @@ namespace BetterBreakpoints.Margin
         private void OnLayoutChanged(object sender, TextViewLayoutChangedEventArgs e)
         {
             ITextSnapshot snapshot = _textView.TextBuffer.CurrentSnapshot;
-            foreach (MarginMarker marker in _breakpointMarkers.Values)
+            foreach (MarginMarker marker in _breakpointMarkers)
             {
                 marker.UpdatePosition(snapshot, (ITextView)sender);
             }
+
+            _breakpointMarkers.RemoveAll(bpMarker =>
+            {
+                if (!bpMarker.bpInfo.IsValid())
+                {
+                    ExtensionState.g_extensionState.RemoveBreakpoint(bpMarker.bpInfo.filePath, bpMarker.bpInfo.lineNumber);
+                    this.Children.Remove(bpMarker);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
 
             // Hide the popup
             _popup.PlacementTarget = null;
@@ -115,22 +129,38 @@ namespace BetterBreakpoints.Margin
                     if (bp != null)
                     {
                         ExtensionState.g_extensionState.RemoveBreakpoint(_filePath, lineNumber);
-                        this.Children.Remove(_breakpointMarkers[lineNumber]);
-                        _breakpointMarkers.Remove(lineNumber);
+                        _breakpointMarkers.RemoveAll((bpMarker) =>
+                        {
+                            if (bpMarker.bpInfo.lineNumber == lineNumber)
+                            {
+                                this.Children.Remove(bpMarker);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        });
                     }
                     else
                     {
                         BreakpointInfo bpInfo = ExtensionState.g_extensionState.CreateBreakpoint(_filePath, lineNumber);
-                        _breakpointMarkers.Add(lineNumber, new MarginMarker(bpInfo));
-                        this.Children.Add(_breakpointMarkers[lineNumber]);
+                        MarginMarker bpMarker = new MarginMarker(bpInfo);
+                        _breakpointMarkers.Add(bpMarker);
+                        this.Children.Add(bpMarker);
                     }
 
                 }
                 else if (e.ChangedButton == MouseButton.Right)
                 {
-                    if (_breakpointMarkers.ContainsKey(lineNumber) && (_selectedMarker != _breakpointMarkers[lineNumber]))
+                    MarginMarker existingMarker = _breakpointMarkers.Find((bpMarker) =>
                     {
-                        _selectedMarker = _breakpointMarkers[lineNumber];
+                        return (bpMarker.bpInfo.lineNumber == lineNumber);
+                    });
+
+                    if ((existingMarker != null) && (_selectedMarker != existingMarker))
+                    {
+                        _selectedMarker = existingMarker;
                         _popup.IsOpen = true;
                         _popup.PlacementTarget = _selectedMarker;
                         _popup.PlacementRectangle = new Rect(

@@ -51,6 +51,7 @@ namespace BetterBreakpoints.Common
         }
 
         private Breakpoint _nativeBreakpoint = null;
+        private bool _isNativeBreakpointValid = true;
         private BreakpointMode _mode;
         private BreakpointColor _color;
 
@@ -62,11 +63,38 @@ namespace BetterBreakpoints.Common
             this.color = BreakpointColor.Green;
         }
 
+        public bool IsValid()
+        {
+            return _isNativeBreakpointValid;
+        }
+
+        public void SyncToNativeBreakpoint()
+        {
+            if (_nativeBreakpoint != null)
+            {
+                try
+                {
+                    this.lineNumber = _nativeBreakpoint.FileLine;
+                }
+                catch (COMException)
+                {
+                    _isNativeBreakpointValid = false;
+                }
+            }
+        }
+
         public void EnableNativeBreakpoint()
         {
             if (_nativeBreakpoint != null)
             {
-                _nativeBreakpoint.Enabled = true;
+                try
+                {
+                    _nativeBreakpoint.Enabled = true;
+                }
+                catch (COMException)
+                {
+                    _isNativeBreakpointValid = false;
+                }
             }
         }
 
@@ -74,7 +102,14 @@ namespace BetterBreakpoints.Common
         {
             if (_nativeBreakpoint != null)
             {
-                _nativeBreakpoint.Enabled = false;
+                try
+                {
+                    _nativeBreakpoint.Enabled = false;
+                }
+                catch (COMException)
+                {
+                    _isNativeBreakpointValid = false;
+                }
             }
         }
 
@@ -118,7 +153,10 @@ namespace BetterBreakpoints.Common
             {
                 _nativeBreakpoint?.Delete();
             }
-            catch (COMException) { }
+            catch (COMException)
+            {
+                _isNativeBreakpointValid = false;
+            }
 
             _nativeBreakpoint = null;
         }

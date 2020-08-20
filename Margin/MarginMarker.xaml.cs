@@ -61,6 +61,7 @@ namespace BetterBreakpoints.Margin
 
         public void UpdatePosition(ITextSnapshot snapshot, ITextView textView)
         {
+            bpInfo.SyncToNativeBreakpoint();
             ITextSnapshotLine line = snapshot.GetLineFromLineNumber(bpInfo.lineNumber - 1);
             ITextViewLine lineView = textView.GetTextViewLineContainingBufferPosition(line.Start);
 

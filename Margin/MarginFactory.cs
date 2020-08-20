@@ -1,4 +1,8 @@
 ﻿using System.ComponentModel.Composition;
+using BetterBreakpoints.Common;
+using EnvDTE;
+using EnvDTE80;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
 
@@ -28,6 +32,10 @@ namespace BetterBreakpoints.Margin
         /// </returns>
         public IWpfTextViewMargin CreateMargin(IWpfTextViewHost wpfTextViewHost, IWpfTextViewMargin marginContainer)
         {
+            if (!ExtensionState.IsInitialized())
+            {
+                ExtensionState.Initialize(Package.GetGlobalService(typeof(DTE)) as DTE2);
+            }
             return new Margin(wpfTextViewHost.TextView);
         }
 

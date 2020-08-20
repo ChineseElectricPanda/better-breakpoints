@@ -30,7 +30,7 @@ namespace BetterBreakpoints.Common
             get;
         }
 
-        public Dictionary<string, Dictionary<int, BreakpointInfo>> breakpoints = new Dictionary<string, Dictionary<int, BreakpointInfo>>();
+        public Dictionary<string, List<BreakpointInfo>> breakpoints = new Dictionary<string, List<BreakpointInfo>>();
 
 
         public static void Initialize(DTE2 dte)
@@ -41,6 +41,11 @@ namespace BetterBreakpoints.Common
             }
 
             _instance = new ExtensionState(dte);
+        }
+
+        public static bool IsInitialized()
+        {
+            return (_instance != null);
         }
 
         private ExtensionState(DTE2 dte)
@@ -56,7 +61,7 @@ namespace BetterBreakpoints.Common
         {
             foreach (var fileBreakpoints in breakpoints.Values)
             {
-                foreach (BreakpointInfo bpInfo in fileBreakpoints.Values)
+                foreach (BreakpointInfo bpInfo in fileBreakpoints)
                 {
                     func(bpInfo);
                 }
@@ -125,7 +130,7 @@ namespace BetterBreakpoints.Common
         {
             if (breakpoints.ContainsKey(filePath))
             {
-                return breakpoints[filePath].Values.ToList();
+                return breakpoints[filePath].ToList();
             }
             else
             {
@@ -140,44 +145,61 @@ namespace BetterBreakpoints.Common
         {
             if (breakpoints.ContainsKey(filePath))
             {
-                if (breakpoints[filePath].ContainsKey(lineNumber))
+                foreach (BreakpointInfo bpInfo in breakpoints[filePath])
                 {
-                    return breakpoints[filePath][lineNumber];
+                    if ((bpInfo.filePath == filePath) && (bpInfo.lineNumber == lineNumber))
+                    {
+                        return bpInfo;
+                    }
                 }
-                else
-                {
-                    breakpoints[filePath][lineNumber] = new BreakpointInfo(filePath, lineNumber);
-                    breakpoints[filePath][lineNumber].CreateNativeBreakpoint(dte);
-                }
+
+                BreakpointInfo newBpInfo = new BreakpointInfo(filePath, lineNumber);
+                newBpInfo.CreateNativeBreakpoint(dte);
+                breakpoints[filePath].Add(newBpInfo);
+                return newBpInfo;
             }
             else
             {
-                breakpoints[filePath] = new Dictionary<int, BreakpointInfo>();
-                breakpoints[filePath][lineNumber] = new BreakpointInfo(filePath, lineNumber);
-                breakpoints[filePath][lineNumber].CreateNativeBreakpoint(dte);
+                breakpoints[filePath] = new List<BreakpointInfo>();
+                BreakpointInfo newBpInfo = new BreakpointInfo(filePath, lineNumber);
+                newBpInfo.CreateNativeBreakpoint(dte);
+                breakpoints[filePath].Add(newBpInfo);
+                return newBpInfo;
             }
-
-            return breakpoints[filePath][lineNumber];
         }
 
         public BreakpointInfo GetBreakpoint(string filePath, int lineNumber)
         {
-            if (breakpoints.ContainsKey(filePath) && breakpoints[filePath].ContainsKey(lineNumber))
+            if (breakpoints.ContainsKey(filePath))
             {
-                return breakpoints[filePath][lineNumber];
+                foreach (BreakpointInfo bpInfo in breakpoints[filePath])
+                {
+                    if (bpInfo.lineNumber == lineNumber)
+                    {
+                        return bpInfo;
+                    }
+                }
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public void RemoveBreakpoint(string filePath, int lineNumber)
         {
-            if (breakpoints.ContainsKey(filePath) && breakpoints[filePath].ContainsKey(lineNumber))
+            if (breakpoints.ContainsKey(filePath))
             {
-                breakpoints[filePath][lineNumber].RemoveNativeBreakpoint();
-                breakpoints[filePath].Remove(lineNumber);
+                breakpoints[filePath].RemoveAll((bpInfo) =>
+                {
+                    if (bpInfo.lineNumber == lineNumber)
+                    {
+                        bpInfo.RemoveNativeBreakpoint();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
             }
         }
     }
