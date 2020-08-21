@@ -19,9 +19,13 @@ namespace BetterBreakpoints.Common
 
     public enum BreakpointColor
     {
+        Red,
+        Orange,
+        Yellow,
         Green,
         Blue,
-        Orange,
+        Purple,
+        Pink,
     }
 
     public class BreakpointInfo : IComparable<BreakpointInfo>
@@ -60,7 +64,7 @@ namespace BetterBreakpoints.Common
             this.filePath = filePath;
             this.lineNumber = lineNumber;
             this.mode = BreakpointMode.TriggerAndBreak;
-            this.color = BreakpointColor.Green;
+            this.color = BreakpointColor.Red;
         }
 
         public bool IsValid()
@@ -165,9 +169,13 @@ namespace BetterBreakpoints.Common
         {
             switch (color)
             {
-                case BreakpointColor.Green: return Brushes.Green;
-                case BreakpointColor.Blue: return Brushes.Blue;
-                case BreakpointColor.Orange: return Brushes.Orange;
+                case BreakpointColor.Red:       return Brushes.Red;
+                case BreakpointColor.Orange:    return Brushes.Orange;
+                case BreakpointColor.Yellow:    return Brushes.Yellow;
+                case BreakpointColor.Green:     return Brushes.Green;
+                case BreakpointColor.Blue:      return Brushes.Blue;
+                case BreakpointColor.Purple:    return Brushes.Purple;
+                case BreakpointColor.Pink:      return Brushes.Pink;
                 default: return Brushes.Transparent;
             }
         }

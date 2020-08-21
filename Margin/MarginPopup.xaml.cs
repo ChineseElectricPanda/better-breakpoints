@@ -46,14 +46,26 @@ namespace BetterBreakpoints.Margin
 
                 switch (bpInfo.color)
                 {
+                    case BreakpointColor.Red:
+                        RadioButtonRed.IsChecked = true;
+                        break;
+                    case BreakpointColor.Orange:
+                        RadioButtonOrange.IsChecked = true;
+                        break;
+                    case BreakpointColor.Yellow:
+                        RadioButtonYellow.IsChecked = true;
+                        break;
                     case BreakpointColor.Green:
                         RadioButtonGreen.IsChecked = true;
                         break;
                     case BreakpointColor.Blue:
                         RadioButtonBlue.IsChecked = true;
                         break;
-                    case BreakpointColor.Orange:
-                        RadioButtonOrange.IsChecked = true;
+                    case BreakpointColor.Purple:
+                        RadioButtonPurple.IsChecked = true;
+                        break;
+                    case BreakpointColor.Pink:
+                        RadioButtonPink.IsChecked = true;
                         break;
                 }
             }
@@ -83,6 +95,18 @@ namespace BetterBreakpoints.Margin
 
         private void OnSelectColor(object sender, RoutedEventArgs e)
         {
+            if (RadioButtonRed.IsChecked.Value)
+            {
+                _margin.SetSelectedBreakpointColor(BreakpointColor.Red);
+            }
+            if (RadioButtonOrange.IsChecked.Value)
+            {
+                _margin.SetSelectedBreakpointColor(BreakpointColor.Orange);
+            }
+            if (RadioButtonYellow.IsChecked.Value)
+            {
+                _margin.SetSelectedBreakpointColor(BreakpointColor.Yellow);
+            }
             if (RadioButtonGreen.IsChecked.Value)
             {
                 _margin.SetSelectedBreakpointColor(BreakpointColor.Green);
@@ -91,9 +115,13 @@ namespace BetterBreakpoints.Margin
             {
                 _margin.SetSelectedBreakpointColor(BreakpointColor.Blue);
             }
-            else if (RadioButtonOrange.IsChecked.Value)
+            else if (RadioButtonPurple.IsChecked.Value)
             {
-                _margin.SetSelectedBreakpointColor(BreakpointColor.Orange);
+                _margin.SetSelectedBreakpointColor(BreakpointColor.Purple);
+            }
+            else if (RadioButtonPink.IsChecked.Value)
+            {
+                _margin.SetSelectedBreakpointColor(BreakpointColor.Pink);
             }
         }
     }

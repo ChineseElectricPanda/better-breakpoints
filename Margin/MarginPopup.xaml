@@ -40,9 +40,13 @@
                         </Setter>
                     </Style>
                 </StackPanel.Resources>
+                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonRed" Background="Red"/>
+                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonOrange" Background="Orange"/>
+                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonYellow" Background="Yellow"/>
                 <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonGreen" Background="Green" />
                 <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonBlue" Background="Blue" />
-                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonOrange" Background="Orange"/>
+                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonPurple" Background="Purple"/>
+                <RadioButton GroupName="Color" Checked="OnSelectColor" Style="{StaticResource ColorBlock}" Height="20" Width="20" Name="RadioButtonPink" Background="Pink"/>
             </StackPanel>
         </StackPanel>
     </Border>
